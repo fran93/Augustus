@@ -1,0 +1,17 @@
+package com.fran.augustus.enums;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
+public enum BuildingEnum {
+
+  GRANARY("type_11"),
+  WAREHOUSE("type_10"),
+  MAIN("type_15");
+
+  private String value;
+
+
+}
