@@ -23,9 +23,11 @@ public class CitizenService extends BuildingService {
     firefox.jsClick(firefox.get().findElement(By.id("optimizly_mainnav_village")));
 
     ArrayList<Field> fields = new ArrayList<>();
-    processBuilding(fields, BuildingEnum.GRANARY);
-    processBuilding(fields, BuildingEnum.WAREHOUSE);
-    processBuilding(fields, BuildingEnum.MAIN);
+    processBuilding(fields, BuildingEnum.GRANARY, 20);
+    processBuilding(fields, BuildingEnum.WAREHOUSE, 20);
+    processBuilding(fields, BuildingEnum.MAIN, 20);
+    processBuilding(fields, BuildingEnum.VERSTECK, 10);
+    processBuilding(fields, BuildingEnum.MAUER, 20);
 
     build(fields);
   }

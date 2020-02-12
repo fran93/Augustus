@@ -25,16 +25,17 @@ public class FirefoxClient {
 
     @PostConstruct
     private void init() {
-        Logger.getLogger("org.openqa.selenium").setLevel(Level.OFF);
-        FirefoxOptions options = new FirefoxOptions();
-        options.setHeadless(headlessMode);
-        options.setLogLevel(FirefoxDriverLogLevel.FATAL);
-        driver = new FirefoxDriver(options);
-        if (headlessMode) {
-            driver.manage().window().setSize(new Dimension(1920, 1080));
-        } else {
-            driver.manage().window().maximize();
-        }
+      System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE,"/dev/null");
+      Logger.getLogger("org.openqa.selenium").setLevel(Level.OFF);
+      FirefoxOptions options = new FirefoxOptions();
+      options.setHeadless(headlessMode);
+      options.setLogLevel(FirefoxDriverLogLevel.FATAL);
+      driver = new FirefoxDriver(options);
+      if (headlessMode) {
+          driver.manage().window().setSize(new Dimension(1920, 1080));
+      } else {
+          driver.manage().window().maximize();
+      }
       driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     }
 
@@ -60,17 +61,5 @@ public class FirefoxClient {
   public void loading(int seconds) throws InterruptedException {
     TimeUnit.SECONDS.sleep(seconds);
   }
-
-  public void waiting() throws InterruptedException {
-    TimeUnit.SECONDS.sleep(30);
-  }
-
-    public void restart() {
-        init();
-    }
-
-    public void quit() {
-    	driver.quit();
-	}
 
 }

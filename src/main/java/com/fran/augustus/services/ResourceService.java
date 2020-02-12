@@ -19,10 +19,10 @@ public class ResourceService {
   FirefoxClient firefox;
 
   private Resources getResources() {
-    String clay = firefox.get().findElement(By.className("clay")).findElement(By.className("progressbar")).getAttribute("value");
-    String crop = firefox.get().findElement(By.className("crop")).findElement(By.className("progressbar")).getAttribute("value");
-    String iron = firefox.get().findElement(By.className("iron")).findElement(By.className("progressbar")).getAttribute("value");
-    String wood = firefox.get().findElement(By.className("wood")).findElement(By.className("progressbar")).getAttribute("value");
+    String clay = firefox.get().findElement(By.className("clay")).findElement(By.className("amount")).getAttribute("innerText");
+    String crop = firefox.get().findElement(By.className("crop")).findElement(By.className("amount")).getAttribute("innerText");
+    String iron = firefox.get().findElement(By.className("iron")).findElement(By.className("amount")).getAttribute("innerText");
+    String wood = firefox.get().findElement(By.className("wood")).findElement(By.className("amount")).getAttribute("innerText");
 
     return Resources.builder()
         .clay(Integer.parseInt(clay))

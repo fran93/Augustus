@@ -9,7 +9,9 @@ public enum BuildingEnum {
 
   GRANARY("type_11"),
   WAREHOUSE("type_10"),
-  MAIN("type_15");
+  MAIN("type_15"),
+  VERSTECK("type_23"),
+  MAUER("type_31");
 
   private String value;
 
