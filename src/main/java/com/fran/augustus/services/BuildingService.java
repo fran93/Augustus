@@ -30,15 +30,19 @@ public class BuildingService {
       firefox.mouseOver(locationElement);
       firefox.loading(1);
 
-      if (!locationElement.findElements(By.className("enoughRes")).isEmpty()) {
+      if (!locationElement.findElements(By.className("notNow")).isEmpty()) {
         if(locationElement.findElements(By.className("premiumOptionMenu")).isEmpty()) {
-          locationElement.findElement(By.className("buildingBubble")).click();
+          firefox.jsClick(locationElement.findElement(By.className("buildingBubble")));
         } else {
-          locationElement.findElement(By.className("premiumOptionMenu")).findElement(By.className("buildingBubble")).click();
+          firefox.jsClick(locationElement.findElement(By.className("premiumOptionMenu")).findElement(By.className("buildingBubble")));
         }
 
         log.info(messageSource.getMessage("building.build", new Object[] {fieldToBuild.get()}, Locale.ENGLISH));
       }
+    }
+
+    if(!firefox.get().findElements(By.className("closeWindow")).isEmpty()) {
+      firefox.get().findElement(By.className("cancel")).click();
     }
   }
 

@@ -4,6 +4,7 @@ import com.fran.augustus.properties.TravianProperties;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
+import org.openqa.selenium.TimeoutException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -25,16 +26,18 @@ public class LoginService {
     if(!isLogged()) {
       try {
         firefox.get().get(travianProperties.getUrl());
-        firefox.get().findElement(By.id("loginButton")).click();
-        firefox.get().switchTo().frame(firefox.get().findElement(By.className("mellon-iframe")));
-        firefox.get().switchTo().frame(firefox.get().findElement(By.tagName("iframe")));
-        firefox.get().findElement(By.name("email")).sendKeys(travianProperties.getEmail());
-        firefox.get().findElement(By.name("password")).sendKeys(travianProperties.getPassword());
-        firefox.get().findElement(By.name("submit")).click();
+        if(firefox.get().findElements(By.className("last-active-game-world")).isEmpty()) {
+          firefox.get().findElement(By.id("loginButton")).click();
+          firefox.get().switchTo().frame(firefox.get().findElement(By.className("mellon-iframe")));
+          firefox.get().switchTo().frame(firefox.get().findElement(By.tagName("iframe")));
+          firefox.get().findElement(By.name("email")).sendKeys(travianProperties.getEmail());
+          firefox.get().findElement(By.name("password")).sendKeys(travianProperties.getPassword());
+          firefox.get().findElement(By.name("submit")).click();
+        }
         firefox.get().switchTo().defaultContent();
         firefox.loading(By.className("last-active-game-world"));
         firefox.get().findElement(By.className("last-active-game-world")).findElement(By.tagName("button")).click();
-      } catch(ElementNotInteractableException ex) {
+      } catch(ElementNotInteractableException | TimeoutException ex) {
         log.info("login: " + ex.getMessage());
       }
     }
