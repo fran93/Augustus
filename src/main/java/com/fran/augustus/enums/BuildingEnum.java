@@ -11,7 +11,8 @@ public enum BuildingEnum {
   WAREHOUSE("type_10"),
   MAIN("type_15"),
   VERSTECK("type_23"),
-  MAUER("type_31");
+  MAUER("type_31"),
+  RALLY_POINT("type_16");
 
   private String value;
 

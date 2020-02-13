@@ -26,18 +26,20 @@ public class LoginService {
     if(!isLogged()) {
       try {
         firefox.get().get(travianProperties.getUrl());
-        if(firefox.get().findElements(By.className("last-active-game-world")).isEmpty()) {
+        if(!isInLobby()) {
           firefox.get().findElement(By.id("loginButton")).click();
           firefox.get().switchTo().frame(firefox.get().findElement(By.className("mellon-iframe")));
           firefox.get().switchTo().frame(firefox.get().findElement(By.tagName("iframe")));
           firefox.get().findElement(By.name("email")).sendKeys(travianProperties.getEmail());
           firefox.get().findElement(By.name("password")).sendKeys(travianProperties.getPassword());
           firefox.get().findElement(By.name("submit")).click();
+          firefox.loading(1);
         }
         firefox.get().switchTo().defaultContent();
         firefox.loading(By.className("last-active-game-world"));
         firefox.get().findElement(By.className("last-active-game-world")).findElement(By.tagName("button")).click();
-      } catch(ElementNotInteractableException | TimeoutException ex) {
+        firefox.loading(5);
+      } catch(ElementNotInteractableException | TimeoutException | InterruptedException ex) {
         log.info("login: " + ex.getMessage());
       }
     }
@@ -45,6 +47,10 @@ public class LoginService {
 
   public boolean isLogged() {
     return firefox.get().getCurrentUrl().startsWith("https://com");
+  }
+
+  public boolean isInLobby() {
+    return firefox.get().getCurrentUrl().startsWith("https://lobby");
   }
 
 }

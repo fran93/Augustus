@@ -21,14 +21,23 @@ public class ChiefService {
   @Autowired @Lazy
   CitizenService citizenService;
 
-  @Autowired
-  @Lazy
+  @Autowired @Lazy
   MessageSource messageSource;
+
+  @Autowired @Lazy
+  HeroeService heroeService;
+
+  @Autowired @Lazy
+  MilitaryService militaryService;
 
   public void command() throws InterruptedException {
     loginService.login();
-    peasantService.workOnFields();
-    citizenService.buildOurCity();
-    log.info(messageSource.getMessage("work.done", new Object[] {}, Locale.ENGLISH));
+    if(loginService.isLogged()) {
+      peasantService.workOnFields();
+      citizenService.buildOurCity();
+      heroeService.goIntoAnAdventure();
+      militaryService.sendTroops();
+    }
+    log.info(messageSource.getMessage("work.done", new Object[]{}, Locale.ENGLISH));
   }
 }
