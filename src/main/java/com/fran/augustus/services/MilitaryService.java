@@ -25,8 +25,10 @@ public class MilitaryService {
 
   public void sendTroops() {
     try {
+      firefox.mouseOver(firefox.get().findElement(By.className("troop")));
       firefox.get().findElement(By.className("troop")).click();
       firefox.get().findElement(By.id("optimizely_maintab_FarmList")).click();
+      firefox.loading(By.className("farmListEntry"));
       WebElement farmList = firefox.get().findElement(By.className("farmListEntry"));
       firefox.loading(1);
       farmList.findElement(By.tagName("input")).click();
