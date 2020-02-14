@@ -28,7 +28,7 @@ public class MilitaryService {
       firefox.get().findElement(By.className("troop")).click();
       firefox.get().findElement(By.id("optimizely_maintab_FarmList")).click();
       WebElement farmList = firefox.get().findElement(By.className("farmListEntry"));
-      firefox.wait(1);
+      firefox.loading(1);
       farmList.findElement(By.tagName("input")).click();
       if (!firefox.existsElement(By.className("troopsWarning"))) {
         firefox.get().findElement(By.className("startRaid")).click();
