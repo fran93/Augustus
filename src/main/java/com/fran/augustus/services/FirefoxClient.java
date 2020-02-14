@@ -48,6 +48,10 @@ public class FirefoxClient {
     executor.executeScript("arguments[0].click();", element);
   }
 
+  public boolean existsElement(By by) {
+      return !driver.findElements(by).isEmpty();
+  }
+
   public void mouseOver(WebElement element) {
     Actions mouseHover = new Actions(driver);
     mouseHover.moveToElement(element).click().build().perform();
