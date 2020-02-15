@@ -2,6 +2,7 @@ package com.fran.augustus.services;
 
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -21,19 +22,23 @@ public class HeroeService {
   MessageSource messageSource;
 
   public void goIntoAnAdventure() {
-    WebElement adventureLink = firefox.get().findElement(By.className("adventureLink"));
-    if(adventureLink.findElements(By.className("disabled")).isEmpty()) {
-      adventureLink.click();
+    try {
+      WebElement adventureLink = firefox.get().findElement(By.className("adventureLink"));
+      if (adventureLink.findElements(By.className("disabled")).isEmpty()) {
+        adventureLink.click();
 
-      WebElement animate = firefox.get().findElement(By.className("animate"));
-      if(!animate.getAttribute("class").contains("disabled")) {
-        firefox.jsClick(animate);
-        log.info(messageSource.getMessage("heroe.adventure", new Object[] {}, Locale.ENGLISH));
-      }
+        WebElement animate = firefox.get().findElement(By.className("animate"));
+        if (!animate.getAttribute("class").contains("disabled")) {
+          firefox.jsClick(animate);
+          log.info(messageSource.getMessage("heroe.adventure", new Object[]{}, Locale.ENGLISH));
+        }
 
-      if(!firefox.get().findElements(By.className("closeWindow")).isEmpty()) {
-        firefox.get().findElement(By.className("closeWindow")).click();
+        if (!firefox.get().findElements(By.className("closeWindow")).isEmpty()) {
+          firefox.get().findElement(By.className("closeWindow")).click();
+        }
       }
+    } catch (ElementClickInterceptedException ex) {
+      log.info("goIntoAnAdventure: " + ex.getMessage());
     }
   }
 }
