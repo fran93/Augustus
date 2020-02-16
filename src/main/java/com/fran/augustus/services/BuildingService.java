@@ -43,9 +43,14 @@ public class BuildingService {
         }
       }
 
-      if (!firefox.get().findElements(By.className("closeWindow")).isEmpty()) {
+      if (firefox.existsElement(By.className("closeWindow"))) {
         firefox.get().findElement(By.className("closeWindow")).click();
       }
+
+      if (firefox.existsElement(By.className("closeWarning"))) {
+        firefox.get().findElement(By.className("closeWarning")).click();
+      }
+
     } catch (WebDriverException ex) {
       log.info("build: " + ex.getMessage());
     }
