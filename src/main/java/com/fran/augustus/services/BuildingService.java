@@ -56,7 +56,7 @@ public class BuildingService {
     }
   }
 
-  protected void processBuilding(ArrayList<Field> fields, BuildingEnum buildingEnum, int maxLevel) {
+  protected void processBuilding(ArrayList<Field> fields, BuildingEnum buildingEnum, int maxLevel, int minLevel) {
     WebElement building = firefox.get().findElement(By.className(buildingEnum.getValue()));
     processBuilding(fields, building, maxLevel);
   }

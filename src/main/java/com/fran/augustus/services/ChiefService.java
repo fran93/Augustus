@@ -41,6 +41,7 @@ public class ChiefService {
         citizenService.buildOurCity();
         heroeService.goIntoAnAdventure();
         militaryService.sendTroops();
+        militaryService.trainingTroops();
       }
     }
     log.info(messageSource.getMessage("work.done", new Object[]{}, Locale.ENGLISH));

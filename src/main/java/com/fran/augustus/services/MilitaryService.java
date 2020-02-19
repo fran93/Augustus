@@ -23,6 +23,10 @@ public class MilitaryService {
   @Lazy
   MessageSource messageSource;
 
+  @Autowired
+  @Lazy
+  VillagesService villagesService;
+
   public void sendTroops() {
     try {
       firefox.mouseOver(firefox.get().findElement(By.className("troop")));
@@ -42,6 +46,21 @@ public class MilitaryService {
       }
     } catch (ElementNotInteractableException | StaleElementReferenceException | InterruptedException ex) {
       log.info("sendTroops: " + ex.getMessage());
+    }
+  }
+
+  public void trainingTroops() {
+    if(villagesService.isEngineerVillage()) {
+      //Ram
+      //Trebuchet
+    } else if(villagesService.isPhalanxVillage()) {
+      //Phalanx
+    } else if(villagesService.isHammerVillage()) {
+      //Swordsman
+      //Theutates Thunder
+      //Haeduan
+    } else if(villagesService.isSpyVillage()) {
+      //Pathfinder
     }
   }
 }

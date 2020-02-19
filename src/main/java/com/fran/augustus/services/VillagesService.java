@@ -12,15 +12,20 @@ public class VillagesService {
 
   @Autowired @Lazy
   FirefoxClient firefox;
+  private static String PHALANX_VILLAGE = "[BLAU]";
+  private static String HAMMER_VILLAGE = "[SCHWARZ]";
+  private static String BAUER_VILLAGE = "[GRÜN]";
+  private static String SPY_VILLAGE = "[BRAUN]";
+  private static String ENGINEER_VILLAGE = "[ROT]";
 
   private String lastVillageName = "";
-
+  String currentVillageName = "";
 
   public boolean nextVillage() {
     boolean nextVillage = true;
     firefox.get().findElement(By.className("next")).click();
 
-    String currentVillageName = firefox.get()
+    currentVillageName = firefox.get()
         .findElement(By.className("currentVillageName"))
         .findElement(By.className("villageEntry"))
         .getAttribute("innerText");
@@ -33,5 +38,25 @@ public class VillagesService {
     }
 
      return nextVillage;
+  }
+
+  public boolean isPhalanxVillage() {
+    return currentVillageName.contains(PHALANX_VILLAGE);
+  }
+
+  public boolean isHammerVillage() {
+    return currentVillageName.contains(HAMMER_VILLAGE);
+  }
+
+  public boolean isBauerVillage() {
+    return currentVillageName.contains(BAUER_VILLAGE);
+  }
+
+  public boolean isSpyVillage() {
+    return currentVillageName.contains(SPY_VILLAGE);
+  }
+
+  public boolean isEngineerVillage() {
+    return currentVillageName.contains(ENGINEER_VILLAGE);
   }
 }
