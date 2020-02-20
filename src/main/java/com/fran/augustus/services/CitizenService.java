@@ -31,7 +31,7 @@ public class CitizenService extends BuildingService {
     processBuilding(fields, BuildingEnum.WAREHOUSE, 20, 1);
     processBuilding(fields, BuildingEnum.MAIN, 20, 0);
     processBuilding(fields, BuildingEnum.CRANNY, 10, 0);
-    processBuilding(fields, BuildingEnum.MAUER, 20, 0);
+    processBuilding(fields, BuildingEnum.PALISADE, 20, 0);
     processBuilding(fields, BuildingEnum.GAUL_TRAPPER, 20, 1);
     processBuilding(fields, BuildingEnum.GRAIN_MILL, 5, 10);
     processBuilding(fields, BuildingEnum.BAKERY, 5, 15);

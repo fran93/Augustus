@@ -28,18 +28,10 @@ public class BuildingService {
     try {
       Optional<Field> fieldToBuild = fields.stream().min(Comparator.comparingInt(Field::getLevel));
       if (fieldToBuild.isPresent()) {
-        WebElement locationElement = firefox.get().findElement(By.className(fieldToBuild.get().getPosition()));
-        firefox.mouseOver(locationElement);
-        firefox.loading(1);
-
-        if (!locationElement.findElements(By.className("notNow")).isEmpty()) {
-          if (locationElement.findElements(By.className("premiumOptionMenu")).isEmpty()) {
-            firefox.jsClick(locationElement.findElement(By.className("buildingBubble")));
-          } else {
-            firefox.jsClick(locationElement.findElement(By.className("premiumOptionMenu")).findElement(By.className("buildingBubble")));
-          }
-
-          log.info(messageSource.getMessage("building.build", new Object[]{fieldToBuild.get()}, Locale.ENGLISH));
+        if(fieldToBuild.get().getLevel() > 0) {
+          upgradeBuilding(fieldToBuild);
+        } else {
+          newBuilding(fieldToBuild);
         }
       }
 
@@ -56,20 +48,58 @@ public class BuildingService {
     }
   }
 
-  protected void processBuilding(ArrayList<Field> fields, BuildingEnum buildingEnum, int maxLevel, int minLevel) {
-    WebElement building = firefox.get().findElement(By.className(buildingEnum.getValue()));
-    processBuilding(fields, building, maxLevel);
+  private void newBuilding(Optional<Field> fieldToBuild) {
+    String building = BuildingEnum.getLongValueByValue(fieldToBuild.get().getPosition());
+
+    String locationId = firefox.get().findElement(By.className("free"))
+        .getAttribute("class").split(" ")[1]
+        .replaceFirst("buildingLocation", "")
+        .trim();
+    StringBuilder url = new StringBuilder(firefox.get().getCurrentUrl().split("#")[0]);
+    url.append("#/page:village/location:");
+    url.append(locationId);
+    url.append("/window:building");
+
+    firefox.get().get(url.toString());
+
+    firefox.getParent(firefox.get().findElement(By.className(building))).click();
+    WebElement startConstruction = firefox.get().findElement(By.className("startConstruction"));
+    if(!startConstruction.getAttribute("class").contains("disabled")) {
+      startConstruction.click();
+      log.info(messageSource.getMessage("building.build", new Object[]{fieldToBuild.get()}, Locale.ENGLISH));
+    }
   }
 
-  protected void processBuilding(ArrayList<Field> fields, WebElement building, int maxLevel) {
+  private void upgradeBuilding(Optional<Field> fieldToBuild) throws InterruptedException {
+    WebElement locationElement = firefox.get().findElement(By.className(fieldToBuild.get().getPosition()));
+    firefox.mouseOver(locationElement);
+    firefox.loading(1);
+
+    if (!locationElement.findElements(By.className("notNow")).isEmpty()) {
+      if (locationElement.findElements(By.className("premiumOptionMenu")).isEmpty()) {
+        firefox.jsClick(locationElement.findElement(By.className("buildingBubble")));
+      } else {
+        firefox.jsClick(locationElement.findElement(By.className("premiumOptionMenu")).findElement(By.className("buildingBubble")));
+      }
+
+      log.info(messageSource.getMessage("building.build", new Object[]{fieldToBuild.get()}, Locale.ENGLISH));
+    }
+  }
+
+  protected void processBuilding(ArrayList<Field> fields, BuildingEnum buildingEnum, int maxLevel, int minLevel) {
+    WebElement building = firefox.get().findElement(By.className(buildingEnum.getValue()));
+    processBuilding(fields, building, maxLevel, minLevel);
+  }
+
+  protected void processBuilding(ArrayList<Field> fields, WebElement building, int maxLevel, int minLevel) {
     try {
       String status = building.findElement(By.className("buildingStatus")).getAttribute("class");
       Optional<String> location = Arrays.stream(status.split(" ")).filter(attr -> attr.contains("location")).findFirst();
       String position = location.orElse(null);
-      int level = Integer.parseInt(building.findElement(By.className("buildingLevel")).getAttribute("innerText"));
+      int level = position == null ? 0 : Integer.parseInt(building.findElement(By.className("buildingLevel")).getAttribute("innerText"));
 
       if(level < maxLevel) {
-        fields.add(Field.builder().level(level).position(position).build());
+        fields.add(Field.builder().level(level+minLevel).position(position).build());
       }
     } catch (NumberFormatException | StaleElementReferenceException ex) {
       log.info("processBuilding: " + ex.getMessage());

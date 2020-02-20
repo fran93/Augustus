@@ -1,5 +1,6 @@
 package com.fran.augustus.services;
 
+import com.fran.augustus.enums.UnitEnum;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
@@ -51,16 +52,28 @@ public class MilitaryService {
 
   public void trainingTroops() {
     if(villagesService.isEngineerVillage()) {
-      //Ram
-      //Trebuchet
+      trainingMachinery(UnitEnum.RAM);
+      trainingMachinery(UnitEnum.TREBUCHET);
     } else if(villagesService.isPhalanxVillage()) {
-      //Phalanx
+      trainingInfantry(UnitEnum.PHALANX);
     } else if(villagesService.isHammerVillage()) {
-      //Swordsman
-      //Theutates Thunder
-      //Haeduan
+      trainingInfantry(UnitEnum.SWORDSMAN);
+      trainingCavalry(UnitEnum.THEUTATES_THUNDER);
+      trainingCavalry(UnitEnum.HAEDUAN);
     } else if(villagesService.isSpyVillage()) {
-      //Pathfinder
+      trainingCavalry(UnitEnum.PATHFINDER);
     }
+  }
+
+  private void trainingInfantry(UnitEnum unit) {
+
+  }
+
+  private void trainingCavalry(UnitEnum unit) {
+
+  }
+
+  private void trainingMachinery(UnitEnum unit) {
+
   }
 }

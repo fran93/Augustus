@@ -52,6 +52,10 @@ public class FirefoxClient {
       return !driver.findElements(by).isEmpty();
   }
 
+  public WebElement getParent(WebElement element) {
+      return element.findElement(By.xpath("./.."));
+  }
+
   public void mouseOver(WebElement element) {
     Actions mouseHover = new Actions(driver);
     mouseHover.moveToElement(element).click().build().perform();
