@@ -32,10 +32,6 @@ public class HeroeService {
           firefox.jsClick(animate);
           log.info(messageSource.getMessage("heroe.adventure", new Object[]{}, Locale.ENGLISH));
         }
-
-        if (!firefox.get().findElements(By.className("closeWindow")).isEmpty()) {
-          firefox.get().findElement(By.className("closeWindow")).click();
-        }
       }
     } catch (ElementClickInterceptedException ex) {
       log.info("goIntoAnAdventure: " + ex.getMessage());

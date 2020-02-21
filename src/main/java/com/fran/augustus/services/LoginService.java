@@ -39,10 +39,6 @@ public class LoginService {
         firefox.loading(By.className("last-active-game-world"));
         firefox.get().findElement(By.className("last-active-game-world")).findElement(By.tagName("button")).click();
         firefox.loading(5);
-
-        if (firefox.existsElement(By.className("closeWindow"))) {
-          firefox.get().findElement(By.className("closeWindow")).click();
-        }
       } catch(ElementNotInteractableException | TimeoutException | InterruptedException ex) {
         log.info("login: " + ex.getMessage());
       }

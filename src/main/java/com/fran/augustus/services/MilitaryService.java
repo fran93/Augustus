@@ -33,17 +33,15 @@ public class MilitaryService {
       firefox.mouseOver(firefox.get().findElement(By.className("troop")));
       firefox.get().findElement(By.className("troop")).click();
       firefox.get().findElement(By.id("optimizely_maintab_FarmList")).click();
-      firefox.loading(By.className("farmListEntry"));
-      WebElement farmList = firefox.get().findElement(By.className("farmListEntry"));
-      firefox.loading(1);
-      farmList.findElement(By.tagName("input")).click();
-      if (!firefox.existsElement(By.className("troopsWarning"))) {
-        firefox.get().findElement(By.className("startRaid")).click();
-        log.info(messageSource.getMessage("military.send", new Object[]{}, Locale.ENGLISH));
-      }
-
-      if (firefox.existsElement(By.className("closeWindow"))) {
-        firefox.get().findElement(By.className("closeWindow")).click();
+      if (firefox.existsElement(By.className("farmListEntry"))) {
+        firefox.loading(By.className("farmListEntry"));
+        WebElement farmList = firefox.get().findElement(By.className("farmListEntry"));
+        firefox.loading(1);
+        farmList.findElement(By.tagName("input")).click();
+        if (!firefox.existsElement(By.className("troopsWarning"))) {
+          firefox.get().findElement(By.className("startRaid")).click();
+          log.info(messageSource.getMessage("military.send", new Object[]{}, Locale.ENGLISH));
+        }
       }
     } catch (ElementNotInteractableException | StaleElementReferenceException | InterruptedException ex) {
       log.info("sendTroops: " + ex.getMessage());
