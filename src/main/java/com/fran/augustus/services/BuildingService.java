@@ -49,8 +49,6 @@ public class BuildingService {
   }
 
   private void newBuilding(Optional<Field> fieldToBuild) {
-    String building = BuildingEnum.getLongValueByValue(fieldToBuild.get().getPosition());
-
     String locationId = firefox.get().findElement(By.className("free"))
         .getAttribute("class").split(" ")[1]
         .replaceFirst("buildingLocation", "")
@@ -62,7 +60,7 @@ public class BuildingService {
 
     firefox.get().get(url.toString());
 
-    firefox.getParent(firefox.get().findElement(By.className(building))).click();
+    firefox.getParent(firefox.get().findElement(By.className(fieldToBuild.get().getType()))).click();
     WebElement startConstruction = firefox.get().findElement(By.className("startConstruction"));
     if(!startConstruction.getAttribute("class").contains("disabled")) {
       startConstruction.click();
@@ -87,8 +85,12 @@ public class BuildingService {
   }
 
   protected void processBuilding(ArrayList<Field> fields, BuildingEnum buildingEnum, int maxLevel, int minLevel) {
-    WebElement building = firefox.get().findElement(By.className(buildingEnum.getValue()));
-    processBuilding(fields, building, maxLevel, minLevel);
+    if(firefox.existsElement(By.className(buildingEnum.getValue()))) {
+      WebElement building = firefox.get().findElement(By.className(buildingEnum.getValue()));
+      processBuilding(fields, building, maxLevel, minLevel);
+    } else {
+      fields.add(Field.builder().level(minLevel).type(buildingEnum.getLongValue()).build());
+    }
   }
 
   protected void processBuilding(ArrayList<Field> fields, WebElement building, int maxLevel, int minLevel) {

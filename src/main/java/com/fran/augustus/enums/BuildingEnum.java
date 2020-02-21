@@ -3,8 +3,6 @@ package com.fran.augustus.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.Arrays;
-
 @AllArgsConstructor
 @Getter
 public enum BuildingEnum {
@@ -17,23 +15,23 @@ public enum BuildingEnum {
   RALLY_POINT("type_16", "buildingType16"),
   MARKET_PLACE("type_17", "buildingType17"),
   EMBASSY("type_18", "buildingType18"),
-  TOWN_HALL("type_", "buildingType"),
+  TOWN_HALL("type_24", "buildingType24"),
   RESIDENCE("type_25", "buildingType25"),
-  PALACE("type_", "buildingType"),
-  TREASURY("type_", "buildingType"),
-  TRADE_OFFICE("type_", "buildingType"),
-  STONE_MANSON("type_", "buildingType"),
-  SMITHY("type_", "buildingType"),
-  TOURNAMENT_SQUARE("type_", "buildingType"),
-  BARRACKS("type_", "buildingType"),
-  STABLE("type_", "buildingType"),
-  WORKSHOP("type_", "buildingType"),
-  ACADEMY("type_", "buildingType"),
+  PALACE("type_26", "buildingType26"),
+  TREASURY("type_45", "buildingType45"),
+  TRADE_OFFICE("type_28", "buildingType28"),
+  STONE_MANSON("type_34", "buildingType34"),
+  SMITHY("type_13", "buildingType13"),
+  TOURNAMENT_SQUARE("type_14", "buildingType14"),
+  BARRACKS("type_19", "buildingType19"),
+  STABLE("type_20", "buildingType20"),
+  WORKSHOP("type_21", "buildingType21"),
+  ACADEMY("type_22", "buildingType22"),
   GREAT_BARRACKS("type_", "buildingType"),
   GREAT_STABLE("type_", "buildingType"),
-  SAWMILL("type_", "buildingType"),
-  BRICKYARD("type_", "buildingType"),
-  IRON_FOUNDRY("type_", "buildingType"),
+  SAWMILL("type_5", "buildingType5"),
+  BRICKYARD("type_6", "buildingType6"),
+  IRON_FOUNDRY("type_7", "buildingType7"),
   GRAIN_MILL("type_8", "buildingType8"),
   BAKERY("type_9", "buildingType9"),
   PALISADE("type_33", "buildingType33"),
@@ -42,8 +40,4 @@ public enum BuildingEnum {
 
   private String value;
   private String longValue;
-
-  public static String getLongValueByValue(String value) {
-    return Arrays.stream(values()).filter((build) -> build.getValue().equals(value)).findFirst().get().getLongValue();
-  }
 }

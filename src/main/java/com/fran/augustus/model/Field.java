@@ -11,4 +11,5 @@ public class Field {
 
   private int level;
   private String position;
+  private String type;
 }
