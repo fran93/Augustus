@@ -49,22 +49,36 @@ public class MilitaryService {
   }
 
   public void trainingTroops() {
-    if(villagesService.isEngineerVillage()) {
-      trainingMachinery(UnitEnum.RAM);
-      trainingMachinery(UnitEnum.TREBUCHET);
-    } else if(villagesService.isPhalanxVillage()) {
-      trainingInfantry(UnitEnum.PHALANX);
-    } else if(villagesService.isHammerVillage()) {
-      trainingInfantry(UnitEnum.SWORDSMAN);
-      trainingCavalry(UnitEnum.THEUTATES_THUNDER);
-      trainingCavalry(UnitEnum.HAEDUAN);
-    } else if(villagesService.isSpyVillage()) {
-      trainingCavalry(UnitEnum.PATHFINDER);
+    String troopsRaw = firefox.getText(firefox.get().findElement(By.className("troop")).findElement(By.className("value")));
+    String popRaw = firefox.getText(firefox.get().findElement(By.className("population")).findElement(By.className("value")));
+    int troopsCount = Integer.parseInt(troopsRaw);
+    int popCount = Integer.parseInt(popRaw);
+
+    if(troopsCount < popCount) {
+      if (villagesService.isEngineerVillage()) {
+        trainingMachinery(UnitEnum.RAM);
+        trainingMachinery(UnitEnum.TREBUCHET);
+      } else if (villagesService.isPhalanxVillage()) {
+        trainingInfantry(UnitEnum.PHALANX);
+      } else if (villagesService.isHammerVillage()) {
+        trainingInfantry(UnitEnum.SWORDSMAN);
+        trainingCavalry(UnitEnum.THEUTATES_THUNDER);
+        trainingCavalry(UnitEnum.HAEDUAN);
+      } else if (villagesService.isSpyVillage()) {
+        trainingCavalry(UnitEnum.PATHFINDER);
+      }
     }
   }
 
   private void trainingInfantry(UnitEnum unit) {
+    if(firefox.existsElement(By.className("building_g19_small_flat_white"))) {
+      firefox.get().findElements(By.className("slotContainer")).get(1).click();
+      firefox.getParent(firefox.get().findElement(By.className("items")).findElement(By.className(unit.getValue()))).click();
+      firefox.get().findElement(By.className("inputContainer")).findElement(By.tagName("input")).sendKeys("10");
+      firefox.get().findElement(By.className("animate")).click();
 
+      log.info(messageSource.getMessage("military.train", new Object[]{unit.name()}, Locale.ENGLISH));
+    }
   }
 
   private void trainingCavalry(UnitEnum unit) {

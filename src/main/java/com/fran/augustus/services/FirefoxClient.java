@@ -56,6 +56,10 @@ public class FirefoxClient {
       return element.findElement(By.xpath("./.."));
   }
 
+  public String getText(WebElement element) {
+      return element.getAttribute("innerText");
+  }
+
   public void mouseOver(WebElement element) {
     Actions mouseHover = new Actions(driver);
     mouseHover.moveToElement(element).click().build().perform();
