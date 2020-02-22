@@ -3,6 +3,7 @@ package com.fran.augustus.services;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -33,7 +34,7 @@ public class HeroeService {
           log.info(messageSource.getMessage("heroe.adventure", new Object[]{}, Locale.ENGLISH));
         }
       }
-    } catch (ElementClickInterceptedException ex) {
+    } catch (ElementClickInterceptedException | StaleElementReferenceException ex) {
       log.info("goIntoAnAdventure: " + ex.getMessage());
     }
   }

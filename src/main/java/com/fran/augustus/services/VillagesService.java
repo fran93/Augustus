@@ -2,6 +2,7 @@ package com.fran.augustus.services;
 
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -23,17 +24,22 @@ public class VillagesService {
 
   public boolean nextVillage() {
     boolean nextVillage = true;
-    firefox.get().findElement(By.className("next")).click();
+    try {
+      firefox.get().findElement(By.className("next")).click();
 
-    currentVillageName = firefox.get()
-        .findElement(By.className("currentVillageName"))
-        .findElement(By.className("villageEntry"))
-        .getAttribute("innerText");
+      currentVillageName = firefox.get()
+          .findElement(By.className("currentVillageName"))
+          .findElement(By.className("villageEntry"))
+          .getAttribute("innerText");
 
-    if(lastVillageName.isEmpty()) {
-      lastVillageName = currentVillageName;
-    } else if(lastVillageName.equals(currentVillageName)) {
-      lastVillageName = "";
+      if (lastVillageName.isEmpty()) {
+        lastVillageName = currentVillageName;
+      } else if (lastVillageName.equals(currentVillageName)) {
+        lastVillageName = "";
+        nextVillage = false;
+      }
+    } catch(ElementClickInterceptedException ex) {
+      log.info("nextVillage: " + ex.getMessage());
       nextVillage = false;
     }
 
