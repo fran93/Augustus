@@ -74,4 +74,8 @@ public class FirefoxClient {
     TimeUnit.SECONDS.sleep(seconds);
   }
 
+  public void refresh() {
+    driver.navigate().refresh();
+  }
+
 }

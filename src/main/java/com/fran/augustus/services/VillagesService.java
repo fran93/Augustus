@@ -40,6 +40,7 @@ public class VillagesService {
       }
     } catch(ElementClickInterceptedException ex) {
       log.info("nextVillage: " + ex.getMessage());
+      firefox.refresh();
       nextVillage = false;
     }
 
