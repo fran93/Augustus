@@ -52,11 +52,13 @@ public class BuildingService {
     firefox.get().get(url.toString());
     firefox.loading(1);
 
-    firefox.getParent(firefox.get().findElement(By.className(fieldToBuild.get().getType()))).click();
-    WebElement startConstruction = firefox.get().findElement(By.className("startConstruction"));
-    if(!startConstruction.getAttribute("class").contains("disabled")) {
-      firefox.jsClick(startConstruction);
-      log.info(messageSource.getMessage("building.build", new Object[]{fieldToBuild.get()}, Locale.ENGLISH));
+    if(fieldToBuild.isPresent()) {
+      firefox.getParent(firefox.get().findElement(By.className(fieldToBuild.get().getType()))).click();
+      WebElement startConstruction = firefox.get().findElement(By.className("startConstruction"));
+      if (!startConstruction.getAttribute("class").contains("disabled")) {
+        firefox.jsClick(startConstruction);
+        log.info(messageSource.getMessage("building.build", new Object[]{fieldToBuild.get()}, Locale.ENGLISH));
+      }
     }
   }
 
