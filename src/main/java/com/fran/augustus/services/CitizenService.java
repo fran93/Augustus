@@ -52,7 +52,6 @@ public class CitizenService extends BuildingService {
       processBuilding(fields, BuildingEnum.BARRACKS, 3, 3);
       processBuilding(fields, BuildingEnum.RESIDENCE, 20, 5);
       processBuilding(fields, BuildingEnum.RALLY_POINT, 20, 0);
-      processBuilding(fields, BuildingEnum.TOWN_HALL, 20, 10);
     } else if(villagesService.isPhalanxVillage()) {
       processBuilding(fields, BuildingEnum.SMITHY, 20, 7);
       processBuilding(fields, BuildingEnum.ACADEMY, 1, 6);
@@ -75,6 +74,16 @@ public class CitizenService extends BuildingService {
       processBuilding(fields, BuildingEnum.BARRACKS, 3, 3);
       processBuilding(fields, BuildingEnum.RESIDENCE, 20, 5);
       processBuilding(fields, BuildingEnum.RALLY_POINT, 1, 0);
+    } else if(villagesService.isRaidingVillage()) {
+      processBuilding(fields, BuildingEnum.RESIDENCE, 20, 5);
+      processBuilding(fields, BuildingEnum.TOURNAMENT_SQUARE, 20, 15);
+      processBuilding(fields, BuildingEnum.SMITHY, 20, 7);
+      processBuilding(fields, BuildingEnum.STABLE, 20, 11);
+      processBuilding(fields, BuildingEnum.ACADEMY, 5, 6);
+      processBuilding(fields, BuildingEnum.BARRACKS, 3, 3);
+      processBuilding(fields, BuildingEnum.RALLY_POINT, 15, 0);
+      processBuilding(fields, BuildingEnum.MARKET_PLACE, 20, 5);
+      processBuilding(fields, BuildingEnum.TOWN_HALL, 20, 10);
     }
 
     build(fields);

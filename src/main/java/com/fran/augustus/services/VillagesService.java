@@ -17,7 +17,8 @@ public class VillagesService {
   private static String HAMMER_VILLAGE = "[SCHWARZ]";
   private static String BAUER_VILLAGE = "[GRÜN]";
   private static String SPY_VILLAGE = "[BRAUN]";
-  private static String ENGINEER_VILLAGE = "[ROT]";
+  private static String ENGINEER_VILLAGE = "[GELB]";
+  private static String RAIDING_VILLAGE = "[ROT]";
 
   private String lastVillageName = "";
   String currentVillageName = "";
@@ -65,5 +66,9 @@ public class VillagesService {
 
   public boolean isEngineerVillage() {
     return currentVillageName.contains(ENGINEER_VILLAGE);
+  }
+
+  public boolean isRaidingVillage() {
+    return currentVillageName.contains(RAIDING_VILLAGE);
   }
 }

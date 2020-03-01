@@ -30,17 +30,19 @@ public class MilitaryService {
 
   public void sendTroops() {
     try {
-      firefox.mouseOver(firefox.get().findElement(By.className("troop")));
-      firefox.get().findElement(By.className("troop")).click();
-      firefox.get().findElement(By.id("optimizely_maintab_FarmList")).click();
-      if (firefox.existsElement(By.className("farmListEntry"))) {
-        firefox.loading(By.className("farmListEntry"));
-        WebElement farmList = firefox.get().findElement(By.className("farmListEntry"));
-        firefox.loading(1);
-        farmList.findElement(By.tagName("input")).click();
-        if (!firefox.existsElement(By.className("troopsWarning"))) {
-          firefox.get().findElement(By.className("startRaid")).click();
-          log.info(messageSource.getMessage("military.send", new Object[]{}, Locale.ENGLISH));
+      if(villagesService.isRaidingVillage()) {
+        firefox.mouseOver(firefox.get().findElement(By.className("troop")));
+        firefox.get().findElement(By.className("troop")).click();
+        firefox.get().findElement(By.id("optimizely_maintab_FarmList")).click();
+        if (firefox.existsElement(By.className("farmListEntry"))) {
+          firefox.loading(By.className("farmListEntry"));
+          WebElement farmList = firefox.get().findElement(By.className("farmListEntry"));
+          firefox.loading(1);
+          farmList.findElement(By.tagName("input")).click();
+          if (!firefox.existsElement(By.className("troopsWarning"))) {
+            firefox.get().findElement(By.className("startRaid")).click();
+            log.info(messageSource.getMessage("military.send", new Object[]{}, Locale.ENGLISH));
+          }
         }
       }
     } catch (ElementNotInteractableException | StaleElementReferenceException | InterruptedException ex) {
@@ -66,6 +68,8 @@ public class MilitaryService {
         trainingCavalry(UnitEnum.HAEDUAN);
       } else if (villagesService.isSpyVillage()) {
         trainingCavalry(UnitEnum.PATHFINDER);
+      } else if(villagesService.isRaidingVillage()) {
+        trainingCavalry(UnitEnum.THEUTATES_THUNDER);
       }
     }
   }
@@ -82,10 +86,24 @@ public class MilitaryService {
   }
 
   private void trainingCavalry(UnitEnum unit) {
+    if(firefox.existsElement(By.className("building_g20_small_flat_white"))) {
+      firefox.get().findElements(By.className("slotContainer")).get(1).click();
+      firefox.getParent(firefox.get().findElement(By.className("items")).findElement(By.className(unit.getValue()))).click();
+      firefox.get().findElement(By.className("inputContainer")).findElement(By.tagName("input")).sendKeys("10");
+      firefox.get().findElement(By.className("animate")).click();
 
+      log.info(messageSource.getMessage("military.train", new Object[]{unit.name()}, Locale.ENGLISH));
+    }
   }
 
   private void trainingMachinery(UnitEnum unit) {
+    if(firefox.existsElement(By.className("building_g21_small_flat_white"))) {
+      firefox.get().findElements(By.className("slotContainer")).get(1).click();
+      firefox.getParent(firefox.get().findElement(By.className("items")).findElement(By.className(unit.getValue()))).click();
+      firefox.get().findElement(By.className("inputContainer")).findElement(By.tagName("input")).sendKeys("10");
+      firefox.get().findElement(By.className("animate")).click();
 
+      log.info(messageSource.getMessage("military.train", new Object[]{unit.name()}, Locale.ENGLISH));
+    }
   }
 }
