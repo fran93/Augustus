@@ -39,7 +39,7 @@ public class BuildingService {
     }
   }
 
-  private void newBuilding(Optional<Field> fieldToBuild) {
+  private void newBuilding(Optional<Field> fieldToBuild) throws InterruptedException {
     String locationId = firefox.get().findElement(By.className("free"))
         .getAttribute("class").split(" ")[1]
         .replaceFirst("buildingLocation", "")
@@ -50,11 +50,12 @@ public class BuildingService {
     url.append("/window:building");
 
     firefox.get().get(url.toString());
+    firefox.loading(1);
 
     firefox.getParent(firefox.get().findElement(By.className(fieldToBuild.get().getType()))).click();
     WebElement startConstruction = firefox.get().findElement(By.className("startConstruction"));
     if(!startConstruction.getAttribute("class").contains("disabled")) {
-      startConstruction.click();
+      firefox.jsClick(startConstruction);
       log.info(messageSource.getMessage("building.build", new Object[]{fieldToBuild.get()}, Locale.ENGLISH));
     }
   }
