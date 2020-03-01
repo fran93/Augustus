@@ -75,7 +75,8 @@ public class MilitaryService {
   }
 
   private void trainingInfantry(UnitEnum unit) {
-    if(firefox.existsElement(By.className("building_g19_small_flat_white"))) {
+    if(firefox.existsElement(By.className("building_g19_small_flat_white")) &&
+        !firefox.get().findElement(By.className("building_g19_small_flat_white")).getAttribute("class").contains("disabled")) {
       firefox.get().findElements(By.className("slotContainer")).get(1).click();
       firefox.getParent(firefox.get().findElement(By.className("items")).findElement(By.className(unit.getValue()))).click();
       firefox.get().findElement(By.className("inputContainer")).findElement(By.tagName("input")).sendKeys("10");
@@ -86,7 +87,8 @@ public class MilitaryService {
   }
 
   private void trainingCavalry(UnitEnum unit) {
-    if(firefox.existsElement(By.className("building_g20_small_flat_white"))) {
+    if(firefox.existsElement(By.className("building_g20_small_flat_white")) &&
+        !firefox.get().findElement(By.className("building_g20_small_flat_white")).getAttribute("class").contains("disabled")) {
       firefox.get().findElements(By.className("slotContainer")).get(1).click();
       firefox.getParent(firefox.get().findElement(By.className("items")).findElement(By.className(unit.getValue()))).click();
       firefox.get().findElement(By.className("inputContainer")).findElement(By.tagName("input")).sendKeys("10");
@@ -97,7 +99,8 @@ public class MilitaryService {
   }
 
   private void trainingMachinery(UnitEnum unit) {
-    if(firefox.existsElement(By.className("building_g21_small_flat_white"))) {
+    if(firefox.existsElement(By.className("building_g21_small_flat_white")) &&
+        !firefox.get().findElement(By.className("building_g21_small_flat_white")).getAttribute("class").contains("disabled")) {
       firefox.get().findElements(By.className("slotContainer")).get(1).click();
       firefox.getParent(firefox.get().findElement(By.className("items")).findElement(By.className(unit.getValue()))).click();
       firefox.get().findElement(By.className("inputContainer")).findElement(By.tagName("input")).sendKeys("10");
