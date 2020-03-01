@@ -63,18 +63,20 @@ public class BuildingService {
   }
 
   private void upgradeBuilding(Optional<Field> fieldToBuild) throws InterruptedException {
-    WebElement locationElement = firefox.get().findElement(By.className(fieldToBuild.get().getPosition()));
-    firefox.mouseOver(locationElement);
-    firefox.loading(1);
+    if(fieldToBuild.isPresent()) {
+      WebElement locationElement = firefox.get().findElement(By.className(fieldToBuild.get().getPosition()));
+      firefox.mouseOver(locationElement);
+      firefox.loading(1);
 
-    if (!locationElement.findElements(By.className("notNow")).isEmpty()) {
-      if (locationElement.findElements(By.className("premiumOptionMenu")).isEmpty()) {
-        firefox.jsClick(locationElement.findElement(By.className("buildingBubble")));
-      } else {
-        firefox.jsClick(locationElement.findElement(By.className("premiumOptionMenu")).findElement(By.className("buildingBubble")));
+      if (!locationElement.findElements(By.className("notNow")).isEmpty()) {
+        if (locationElement.findElements(By.className("premiumOptionMenu")).isEmpty()) {
+          firefox.jsClick(locationElement.findElement(By.className("buildingBubble")));
+        } else {
+          firefox.jsClick(locationElement.findElement(By.className("premiumOptionMenu")).findElement(By.className("buildingBubble")));
+        }
+
+        log.info(messageSource.getMessage("building.build", new Object[]{fieldToBuild.get()}, Locale.ENGLISH));
       }
-
-      log.info(messageSource.getMessage("building.build", new Object[]{fieldToBuild.get()}, Locale.ENGLISH));
     }
   }
 
