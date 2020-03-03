@@ -24,14 +24,17 @@ public class HeroeService {
 
   public void goIntoAnAdventure() {
     try {
-      WebElement adventureLink = firefox.get().findElement(By.className("adventureLink"));
-      if (adventureLink.findElements(By.className("disabled")).isEmpty()) {
-        adventureLink.click();
+      int health = Integer.parseInt(firefox.get().findElement(By.className("health")).getAttribute("perc"));
+      if(health > 30) {
+        WebElement adventureLink = firefox.get().findElement(By.className("adventureLink"));
+        if (adventureLink.findElements(By.className("disabled")).isEmpty()) {
+          adventureLink.click();
 
-        WebElement animate = firefox.get().findElement(By.className("animate"));
-        if (!animate.getAttribute("class").contains("disabled")) {
-          firefox.jsClick(animate);
-          log.info(messageSource.getMessage("heroe.adventure", new Object[]{}, Locale.ENGLISH));
+          WebElement animate = firefox.get().findElement(By.className("animate"));
+          if (!animate.getAttribute("class").contains("disabled")) {
+            firefox.jsClick(animate);
+            log.info(messageSource.getMessage("heroe.adventure", new Object[]{}, Locale.ENGLISH));
+          }
         }
       }
     } catch (ElementClickInterceptedException | StaleElementReferenceException ex) {
