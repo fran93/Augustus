@@ -11,9 +11,9 @@ public enum UnitEnum {
   TREBUCHET(""),
   PHALANX("unitType1"),
   SWORDSMAN("unitType2"),
-  THEUTATES_THUNDER(""),
+  THEUTATES_THUNDER("unitType4"),
   HAEDUAN(""),
-  PATHFINDER("");
+  PATHFINDER("unitType3");
 
   private String value;
 }

@@ -3,6 +3,7 @@ package com.fran.augustus.services;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
+import org.openqa.selenium.ElementNotInteractableException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class VillagesService {
         lastVillageName = "";
         nextVillage = false;
       }
-    } catch(ElementClickInterceptedException ex) {
+    } catch(ElementNotInteractableException ex) {
       log.info("nextVillage: " + ex.getMessage());
       firefox.refresh();
       nextVillage = false;

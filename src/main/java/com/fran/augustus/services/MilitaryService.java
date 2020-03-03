@@ -7,6 +7,7 @@ import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,9 @@ public class MilitaryService {
   @Lazy
   VillagesService villagesService;
 
+  @Value( "${troops.ratio}" )
+  int troopsRatio;
+
   public void sendTroops() {
     try {
       if(villagesService.isRaidingVillage()) {
@@ -39,7 +43,9 @@ public class MilitaryService {
           WebElement farmList = firefox.get().findElement(By.className("farmListEntry"));
           firefox.loading(1);
           farmList.findElement(By.tagName("input")).click();
-          if (!firefox.existsElement(By.className("troopsWarning"))) {
+          if (!firefox.existsElement(By.className("troopsWarning")) &&
+              !firefox.get().findElement(By.className("startRaid")).getAttribute("class").contains("disabled")) {
+
             firefox.get().findElement(By.className("startRaid")).click();
             log.info(messageSource.getMessage("military.send", new Object[]{}, Locale.ENGLISH));
           }
@@ -53,10 +59,11 @@ public class MilitaryService {
   public void trainingTroops() {
     String troopsRaw = firefox.getText(firefox.get().findElement(By.className("troop")).findElement(By.className("value")));
     String popRaw = firefox.getText(firefox.get().findElement(By.className("population")).findElement(By.className("value")));
-    int troopsCount = Integer.parseInt(troopsRaw);
-    int popCount = Integer.parseInt(popRaw);
+    double troopsCount = Integer.parseInt(troopsRaw);
+    double popCount = Integer.parseInt(popRaw);
+    Double desiredTroops = (popCount / troopsRatio) * popCount;
 
-    if(troopsCount < popCount) {
+    if(troopsCount < desiredTroops) {
       if (villagesService.isEngineerVillage()) {
         trainingMachinery(UnitEnum.RAM);
         trainingMachinery(UnitEnum.TREBUCHET);
@@ -89,7 +96,7 @@ public class MilitaryService {
   private void trainingCavalry(UnitEnum unit) {
     if(firefox.existsElement(By.className("building_g20_small_flat_white")) &&
         !firefox.get().findElement(By.className("building_g20_small_flat_white")).getAttribute("class").contains("disabled")) {
-      firefox.get().findElements(By.className("slotContainer")).get(1).click();
+      firefox.get().findElements(By.className("slotContainer")).get(2).click();
       firefox.getParent(firefox.get().findElement(By.className("items")).findElement(By.className(unit.getValue()))).click();
       firefox.get().findElement(By.className("inputContainer")).findElement(By.tagName("input")).sendKeys("10");
       firefox.get().findElement(By.className("animate")).click();
@@ -101,7 +108,7 @@ public class MilitaryService {
   private void trainingMachinery(UnitEnum unit) {
     if(firefox.existsElement(By.className("building_g21_small_flat_white")) &&
         !firefox.get().findElement(By.className("building_g21_small_flat_white")).getAttribute("class").contains("disabled")) {
-      firefox.get().findElements(By.className("slotContainer")).get(1).click();
+      firefox.get().findElements(By.className("slotContainer")).get(3).click();
       firefox.getParent(firefox.get().findElement(By.className("items")).findElement(By.className(unit.getValue()))).click();
       firefox.get().findElement(By.className("inputContainer")).findElement(By.tagName("input")).sendKeys("10");
       firefox.get().findElement(By.className("animate")).click();

@@ -63,7 +63,7 @@ public class BuildingService {
   }
 
   private void upgradeBuilding(Optional<Field> fieldToBuild) throws InterruptedException {
-    if(fieldToBuild.isPresent()) {
+    if(fieldToBuild.isPresent() && fieldToBuild.get().getPosition() != null) {
       WebElement locationElement = firefox.get().findElement(By.className(fieldToBuild.get().getPosition()));
       firefox.mouseOver(locationElement);
       firefox.loading(1);
