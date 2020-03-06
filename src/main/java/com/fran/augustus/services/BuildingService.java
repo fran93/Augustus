@@ -52,7 +52,7 @@ public class BuildingService {
     firefox.get().get(url.toString());
     firefox.loading(1);
 
-    if(fieldToBuild.isPresent()) {
+    if(fieldToBuild.isPresent() && fieldToBuild.get().getPosition() != null) {
       firefox.getParent(firefox.get().findElement(By.className(fieldToBuild.get().getType()))).click();
       WebElement startConstruction = firefox.get().findElement(By.className("startConstruction"));
       if (!startConstruction.getAttribute("class").contains("disabled")) {
