@@ -13,12 +13,13 @@ public class VillagesService {
 
   @Autowired @Lazy
   FirefoxClient firefox;
+
   private static String PHALANX_VILLAGE = "[BLAU]";
   private static String HAMMER_VILLAGE = "[SCHWARZ]";
-  private static String BAUER_VILLAGE = "[GRÜN]";
+  private static String BAUER_VILLAGE = "[GELB]";
   private static String SPY_VILLAGE = "[BRAUN]";
-  private static String ENGINEER_VILLAGE = "[GELB]";
   private static String RAIDING_VILLAGE = "[ROT]";
+  private static String DRUID_VILLAGE = "[GRÜN]";
 
   private String lastVillageName = "";
   String currentVillageName = "";
@@ -64,11 +65,9 @@ public class VillagesService {
     return currentVillageName.contains(SPY_VILLAGE);
   }
 
-  public boolean isEngineerVillage() {
-    return currentVillageName.contains(ENGINEER_VILLAGE);
-  }
-
   public boolean isRaidingVillage() {
     return currentVillageName.contains(RAIDING_VILLAGE);
   }
+
+  public boolean isDruidVillage() { return currentVillageName.contains(DRUID_VILLAGE); }
 }

@@ -29,6 +29,10 @@ public class MilitaryService {
   @Lazy
   VillagesService villagesService;
 
+  @Autowired
+  @Lazy
+  ResourceService resourceService;
+
   @Value( "${troops.ratio}" )
   int troopsRatio;
 
@@ -57,33 +61,36 @@ public class MilitaryService {
   }
 
   public void trainingTroops() {
-    String troopsRaw = firefox.getText(firefox.get().findElement(By.className("troop")).findElement(By.className("value")));
-    String popRaw = firefox.getText(firefox.get().findElement(By.className("population")).findElement(By.className("value")));
+    String troopsRaw = firefox.getText(firefox.get()
+        .findElement(By.className("troop"))
+        .findElement(By.className("value")));
+    String popRaw = firefox.getText(firefox.get()
+        .findElement(By.className("population"))
+        .findElement(By.className("value")));
+
     double troopsCount = Integer.parseInt(troopsRaw);
     double popCount = Integer.parseInt(popRaw);
     Double desiredTroops = (popCount / troopsRatio) * popCount;
 
     if(troopsCount < desiredTroops) {
-      if (villagesService.isEngineerVillage()) {
-        trainingMachinery(UnitEnum.RAM);
-        trainingMachinery(UnitEnum.TREBUCHET);
-      } else if (villagesService.isPhalanxVillage()) {
-        trainingInfantry(UnitEnum.PHALANX);
-      } else if (villagesService.isHammerVillage()) {
+       if (villagesService.isPhalanxVillage()) {
+         trainingInfantry(UnitEnum.PHALANX);
+       } else if (villagesService.isDruidVillage()) {
+         trainingCavalry(UnitEnum.DRUIDRIDER);
+       } else if (villagesService.isHammerVillage()) {
         trainingInfantry(UnitEnum.SWORDSMAN);
-        trainingCavalry(UnitEnum.THEUTATES_THUNDER);
         trainingCavalry(UnitEnum.HAEDUAN);
-      } else if (villagesService.isSpyVillage()) {
+        trainingMachinery(UnitEnum.TREBUCHET);
+       } else if (villagesService.isSpyVillage()) {
         trainingCavalry(UnitEnum.PATHFINDER);
-      } else if(villagesService.isRaidingVillage()) {
+       } else if(villagesService.isRaidingVillage()) {
         trainingCavalry(UnitEnum.THEUTATES_THUNDER);
-      }
+       }
     }
   }
 
   private void trainingInfantry(UnitEnum unit) {
-    if(!firefox.existsElement(By.className("building_g19_small_flat_green")) &&
-        !firefox.get().findElement(By.className("building_g19_small_flat_white")).getAttribute("class").contains("disabled")) {
+    if(isTrainingAvailable(19)) {
       firefox.get().findElements(By.className("slotContainer")).get(1).click();
       firefox.getParent(firefox.get().findElement(By.className("items")).findElement(By.className(unit.getValue()))).click();
       firefox.get().findElement(By.className("inputContainer")).findElement(By.tagName("input")).sendKeys("10");
@@ -94,8 +101,7 @@ public class MilitaryService {
   }
 
   private void trainingCavalry(UnitEnum unit) {
-    if(!firefox.existsElement(By.className("building_g20_small_flat_green")) &&
-        !firefox.get().findElement(By.className("building_g20_small_flat_white")).getAttribute("class").contains("disabled")) {
+    if(isTrainingAvailable(20)) {
       firefox.get().findElements(By.className("slotContainer")).get(2).click();
       firefox.getParent(firefox.get().findElement(By.className("items")).findElement(By.className(unit.getValue()))).click();
       firefox.get().findElement(By.className("inputContainer")).findElement(By.tagName("input")).sendKeys("10");
@@ -106,8 +112,7 @@ public class MilitaryService {
   }
 
   private void trainingMachinery(UnitEnum unit) {
-    if(!firefox.existsElement(By.className("building_g21_small_flat_green")) &&
-        !firefox.get().findElement(By.className("building_g21_small_flat_white")).getAttribute("class").contains("disabled")) {
+    if(isTrainingAvailable(21)) {
       firefox.get().findElements(By.className("slotContainer")).get(3).click();
       firefox.getParent(firefox.get().findElement(By.className("items")).findElement(By.className(unit.getValue()))).click();
       firefox.get().findElement(By.className("inputContainer")).findElement(By.tagName("input")).sendKeys("10");
@@ -115,5 +120,14 @@ public class MilitaryService {
 
       log.info(messageSource.getMessage("military.train", new Object[]{unit.name()}, Locale.ENGLISH));
     }
+  }
+
+  private boolean isTrainingAvailable(int g) {
+    StringBuilder green = new StringBuilder("building_g").append(g).append("_small_flat_green");
+    StringBuilder white = new StringBuilder("building_g").append(g).append("_small_flat_white");
+
+    return !firefox.existsElement(By.className(green.toString())) &&
+        !firefox.get().findElement(By.className(white.toString())).getAttribute("class").contains("disabled") &&
+        resourceService.isCropPositive();
   }
 }

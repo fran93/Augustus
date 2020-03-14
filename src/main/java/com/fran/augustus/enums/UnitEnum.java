@@ -12,7 +12,8 @@ public enum UnitEnum {
   PHALANX("unitType1"),
   SWORDSMAN("unitType2"),
   THEUTATES_THUNDER("unitType4"),
-  HAEDUAN(""),
+  HAEDUAN("unitType6"),
+  DRUIDRIDER("unitType5"),
   PATHFINDER("unitType3");
 
   private String value;

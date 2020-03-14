@@ -2,11 +2,16 @@ package com.fran.augustus.services;
 
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Locale;
 
 @Service
@@ -37,31 +42,50 @@ public class ChiefService {
   @Autowired @Lazy
   FirefoxClient firefox;
 
-  public void command() throws InterruptedException {
-    loginService.login();
-    if(loginService.isLogged()) {
-      while(villagesService.nextVillage()) {
-        closePopUp();
-        peasantService.workOnFields();
-        citizenService.buildOurCity();
-        closePopUp();
-        heroeService.goIntoAnAdventure();
-        closePopUp();
-        militaryService.sendTroops();
-        closePopUp();
-        militaryService.trainingTroops();
-        closePopUp();
+  public void command() throws Exception {
+    if(automaticMode()) {
+      loginService.login();
+      if (loginService.isLogged()) {
+        while (villagesService.nextVillage()) {
+          closePopUp();
+          peasantService.workOnFields();
+          citizenService.buildOurCity();
+          closePopUp();
+          heroeService.goIntoAnAdventure();
+          closePopUp();
+          militaryService.sendTroops();
+          closePopUp();
+          militaryService.trainingTroops();
+          closePopUp();
+        }
       }
+      log.info(messageSource.getMessage("work.done", new Object[]{}, Locale.ENGLISH));
+    } else {
+      log.info(messageSource.getMessage("work.waiting", null, Locale.ENGLISH));
     }
-    log.info(messageSource.getMessage("work.done", new Object[]{}, Locale.ENGLISH));
   }
 
   private void closePopUp() {
-    if (firefox.existsElement(By.className("closeWindow"))) {
-      firefox.get().findElement(By.className("closeWindow")).click();
+    try {
+      if (firefox.existsElement(By.className("closeWindow"))) {
+        firefox.get().findElement(By.className("closeWindow")).click();
+      }
+      if (firefox.existsElement(By.className("closeWarning"))) {
+        firefox.get().findElement(By.className("closeWarning")).click();
+      }
+    } catch(ElementClickInterceptedException ex) {
+      log.info("closePopUp: ", ex);
     }
-    if (firefox.existsElement(By.className("closeWarning"))) {
-      firefox.get().findElement(By.className("closeWarning")).click();
+  }
+
+  private boolean automaticMode() throws IOException {
+    Path path = Paths.get("automaticMode");
+    boolean automaticMode = true;
+
+    if (Files.exists(path)) {
+      automaticMode = Files.readAllLines(path).stream().findFirst().orElse("1").trim().equals("1");
     }
+
+    return automaticMode;
   }
 }
