@@ -49,11 +49,10 @@ public class ChiefService {
         while (villagesService.nextVillage()) {
           closePopUp();
           peasantService.workOnFields();
+          closePopUp();
           citizenService.buildOurCity();
           closePopUp();
           heroeService.goIntoAnAdventure();
-          closePopUp();
-          militaryService.sendTroops();
           closePopUp();
           militaryService.trainingTroops();
           closePopUp();
@@ -74,7 +73,7 @@ public class ChiefService {
         firefox.get().findElement(By.className("closeWarning")).click();
       }
     } catch(ElementClickInterceptedException ex) {
-      log.info("closePopUp: ", ex);
+      log.info("closePopUp: " + ex.getMessage());
     }
   }
 
