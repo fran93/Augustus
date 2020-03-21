@@ -26,7 +26,7 @@ public class PeasantService extends BuildingService {
 
     ResourceEnum resource = resourceService.getLowerResource();
     ArrayList<Field> fields = new ArrayList<>();
-    firefox.get().findElements(By.className(resource.getValue())).forEach(field -> processBuilding(fields, field, 10, 0));
+    firefox.get().findElements(By.className(resource.getValue())).forEach(field -> processBuilding(fields, field, 12, 0));
 
     build(fields);
   }

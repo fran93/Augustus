@@ -3,6 +3,7 @@ package com.fran.augustus.services;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Lazy;
@@ -72,7 +73,7 @@ public class ChiefService {
       if (firefox.existsElement(By.className("closeWarning"))) {
         firefox.get().findElement(By.className("closeWarning")).click();
       }
-    } catch(ElementClickInterceptedException ex) {
+    } catch(ElementClickInterceptedException | StaleElementReferenceException ex) {
       log.info("closePopUp: " + ex.getMessage());
     }
   }

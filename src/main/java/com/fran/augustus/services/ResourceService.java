@@ -38,6 +38,8 @@ public class ResourceService {
   }
 
   public ResourceEnum getLowerResource() {
+    ResourceEnum lower = ResourceEnum.CROP;
+
     Resources resource = getResources();
     OptionalInt min = Arrays.stream(new int[] {
         resource.getClay(),
@@ -46,17 +48,17 @@ public class ResourceService {
         resource.getWood()
     }).min();
 
-    if(min.isPresent()) {
+    if(isCropPositive() && min.isPresent()) {
       if(min.getAsInt() == resource.getIron()) {
-        return ResourceEnum.IRON;
+        lower = ResourceEnum.IRON;
       } else if(min.getAsInt() == resource.getWood()) {
-        return ResourceEnum.WOOD;
+        lower = ResourceEnum.WOOD;
       } else  if(min.getAsInt() == resource.getClay()) {
-        return ResourceEnum.CLAY;
+        lower = ResourceEnum.CLAY;
       }
     }
 
-    return ResourceEnum.CROP;
+    return lower;
   }
 
   public boolean isCropPositive() {

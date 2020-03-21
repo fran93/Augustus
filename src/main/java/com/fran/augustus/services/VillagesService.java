@@ -14,12 +14,12 @@ public class VillagesService {
   @Autowired @Lazy
   FirefoxClient firefox;
 
-  private static String PHALANX_VILLAGE = "[BLAU]";
+  private static String ANTI_CAVALRY_VILLAGE = "[BLAU]";
   private static String HAMMER_VILLAGE = "[SCHWARZ]";
   private static String BAUER_VILLAGE = "[GELB]";
   private static String SPY_VILLAGE = "[BRAUN]";
   private static String RAIDING_VILLAGE = "[ROT]";
-  private static String DRUID_VILLAGE = "[GRÜN]";
+  private static String ANTI_INFANTRY_VILLAGE = "[GRÜN]";
 
   private String lastVillageName = "";
   String currentVillageName = "";
@@ -49,9 +49,7 @@ public class VillagesService {
      return nextVillage;
   }
 
-  public boolean isPhalanxVillage() {
-    return currentVillageName.contains(PHALANX_VILLAGE);
-  }
+  public boolean isAntiCavalryVillage() { return currentVillageName.contains(ANTI_CAVALRY_VILLAGE); }
 
   public boolean isHammerVillage() {
     return currentVillageName.contains(HAMMER_VILLAGE);
@@ -69,5 +67,5 @@ public class VillagesService {
     return currentVillageName.contains(RAIDING_VILLAGE);
   }
 
-  public boolean isDruidVillage() { return currentVillageName.contains(DRUID_VILLAGE); }
+  public boolean isAntiInfantryVillage() { return currentVillageName.contains(ANTI_INFANTRY_VILLAGE); }
 }

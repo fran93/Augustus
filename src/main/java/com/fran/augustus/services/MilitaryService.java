@@ -1,5 +1,6 @@
 package com.fran.augustus.services;
 
+import com.fran.augustus.enums.TribesEnum;
 import com.fran.augustus.enums.UnitEnum;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
@@ -36,6 +37,9 @@ public class MilitaryService {
   @Value( "${troops.ratio}" )
   int troopsRatio;
 
+  @Value( "${tribe}" )
+  String tribe;
+
   public void sendTroops() {
     try {
       if(villagesService.isRaidingVillage()) {
@@ -61,8 +65,7 @@ public class MilitaryService {
   }
 
   public void trainingTroops() {
-    String troopsRaw = firefox.getText(firefox.get()
-        .findElement(By.className("troop"))
+    String troopsRaw = firefox.getText(firefox.get().findElement(By.className("troop"))
         .findElement(By.className("value")));
     String popRaw = firefox.getText(firefox.get()
         .findElement(By.className("population"))
@@ -73,18 +76,28 @@ public class MilitaryService {
     Double desiredTroops = (popCount / troopsRatio) * popCount;
 
     if(troopsCount < desiredTroops) {
-       if (villagesService.isPhalanxVillage()) {
-         trainingInfantry(UnitEnum.PHALANX);
-       } else if (villagesService.isDruidVillage()) {
-         trainingCavalry(UnitEnum.DRUIDRIDER);
+       if (villagesService.isAntiCavalryVillage()) {
+         if(TribesEnum.GAULS.getValue().equals(tribe)) {
+           trainingInfantry(UnitEnum.PHALANX);
+         }
+       } else if (villagesService.isAntiInfantryVillage()) {
+         if(TribesEnum.GAULS.getValue().equals(tribe)) {
+           trainingCavalry(UnitEnum.DRUIDRIDER);
+         }
        } else if (villagesService.isHammerVillage()) {
-        trainingInfantry(UnitEnum.SWORDSMAN);
-        trainingCavalry(UnitEnum.HAEDUAN);
-        trainingMachinery(UnitEnum.TREBUCHET);
+         if(TribesEnum.GAULS.getValue().equals(tribe)) {
+           trainingInfantry(UnitEnum.SWORDSMAN);
+           trainingCavalry(UnitEnum.HAEDUAN);
+           trainingMachinery(UnitEnum.TREBUCHET);
+         }
        } else if (villagesService.isSpyVillage()) {
-        trainingCavalry(UnitEnum.PATHFINDER);
+         if(TribesEnum.GAULS.getValue().equals(tribe)) {
+           trainingCavalry(UnitEnum.PATHFINDER);
+         }
        } else if(villagesService.isRaidingVillage()) {
-        trainingCavalry(UnitEnum.THEUTATES_THUNDER);
+         if(TribesEnum.GAULS.getValue().equals(tribe)) {
+           trainingCavalry(UnitEnum.THEUTATES_THUNDER);
+         }
        }
     }
   }
