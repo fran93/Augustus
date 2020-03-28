@@ -3,10 +3,7 @@ package com.fran.augustus.services;
 import com.fran.augustus.enums.TribesEnum;
 import com.fran.augustus.enums.UnitEnum;
 import lombok.extern.log4j.Log4j2;
-import org.openqa.selenium.By;
-import org.openqa.selenium.ElementNotInteractableException;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -114,13 +111,17 @@ public class MilitaryService {
   }
 
   private void trainingCavalry(UnitEnum unit) {
-    if(isTrainingAvailable(20)) {
-      firefox.get().findElements(By.className("slotContainer")).get(2).click();
-      firefox.getParent(firefox.get().findElement(By.className("items")).findElement(By.className(unit.getValue()))).click();
-      firefox.get().findElement(By.className("inputContainer")).findElement(By.tagName("input")).sendKeys("10");
-      firefox.get().findElement(By.className("animate")).click();
+    try {
+      if (isTrainingAvailable(20)) {
+        firefox.get().findElements(By.className("slotContainer")).get(2).click();
+        firefox.getParent(firefox.get().findElement(By.className("items")).findElement(By.className(unit.getValue()))).click();
+        firefox.get().findElement(By.className("inputContainer")).findElement(By.tagName("input")).sendKeys("10");
+        firefox.get().findElement(By.className("animate")).click();
 
-      log.info(messageSource.getMessage("military.train", new Object[]{unit.name()}, Locale.ENGLISH));
+        log.info(messageSource.getMessage("military.train", new Object[]{unit.name()}, Locale.ENGLISH));
+      }
+    } catch (NoSuchElementException ex) {
+      log.info("trainingCavalry: " + ex.getMessage());
     }
   }
 
