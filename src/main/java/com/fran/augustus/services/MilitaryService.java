@@ -31,9 +31,6 @@ public class MilitaryService {
   @Lazy
   ResourceService resourceService;
 
-  @Value( "${troops.ratio}" )
-  int troopsRatio;
-
   @Value( "${tribe}" )
   String tribe;
 
@@ -70,7 +67,9 @@ public class MilitaryService {
 
     double troopsCount = Integer.parseInt(troopsRaw);
     double popCount = Integer.parseInt(popRaw);
-    Double desiredTroops = (popCount / troopsRatio) * popCount;
+    double troopsRatio = popCount > 100 ? 1 : 0;
+    troopsRatio *= villagesService.isHammerVillage() ? 2 : 1;
+    Double desiredTroops = popCount * troopsRatio;
 
     if(troopsCount < desiredTroops) {
        if (villagesService.isAntiCavalryVillage()) {
@@ -100,13 +99,17 @@ public class MilitaryService {
   }
 
   private void trainingInfantry(UnitEnum unit) {
-    if(isTrainingAvailable(19)) {
-      firefox.get().findElements(By.className("slotContainer")).get(1).click();
-      firefox.getParent(firefox.get().findElement(By.className("items")).findElement(By.className(unit.getValue()))).click();
-      firefox.get().findElement(By.className("inputContainer")).findElement(By.tagName("input")).sendKeys("10");
-      firefox.get().findElement(By.className("animate")).click();
+    try {
+      if(isTrainingAvailable(19)) {
+        firefox.get().findElements(By.className("slotContainer")).get(1).click();
+        firefox.getParent(firefox.get().findElement(By.className("items")).findElement(By.className(unit.getValue()))).click();
+        firefox.get().findElement(By.className("inputContainer")).findElement(By.tagName("input")).sendKeys("10");
+        firefox.get().findElement(By.className("animate")).click();
 
-      log.info(messageSource.getMessage("military.train", new Object[]{unit.name()}, Locale.ENGLISH));
+        log.info(messageSource.getMessage("military.train", new Object[]{unit.name()}, Locale.ENGLISH));
+      }
+    } catch (NoSuchElementException ex) {
+      log.info("trainingInfantry: " + ex.getMessage());
     }
   }
 
@@ -126,13 +129,17 @@ public class MilitaryService {
   }
 
   private void trainingMachinery(UnitEnum unit) {
-    if(isTrainingAvailable(21)) {
-      firefox.get().findElements(By.className("slotContainer")).get(3).click();
-      firefox.getParent(firefox.get().findElement(By.className("items")).findElement(By.className(unit.getValue()))).click();
-      firefox.get().findElement(By.className("inputContainer")).findElement(By.tagName("input")).sendKeys("10");
-      firefox.get().findElement(By.className("animate")).click();
+    try {
+      if(isTrainingAvailable(21)) {
+        firefox.get().findElements(By.className("slotContainer")).get(3).click();
+        firefox.getParent(firefox.get().findElement(By.className("items")).findElement(By.className(unit.getValue()))).click();
+        firefox.get().findElement(By.className("inputContainer")).findElement(By.tagName("input")).sendKeys("10");
+        firefox.get().findElement(By.className("animate")).click();
 
-      log.info(messageSource.getMessage("military.train", new Object[]{unit.name()}, Locale.ENGLISH));
+        log.info(messageSource.getMessage("military.train", new Object[]{unit.name()}, Locale.ENGLISH));
+      }
+    } catch (NoSuchElementException ex) {
+      log.info("trainingMachinery: " + ex.getMessage());
     }
   }
 
